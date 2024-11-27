@@ -27,3 +27,6 @@ def test_solve8():
 
 def test_solve9():
     assert -3 == solve(')())())')
+
+def test_solve1000():
+    assert 1000 == solve('('*1000)

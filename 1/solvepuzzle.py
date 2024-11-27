@@ -76,27 +76,30 @@ def compare_performance(puzzle):
     >>> import solvepuzzle
     >>> a = open('input.txt').read()
     >>> solvepuzzle.compare_performance(a)
-    Running count...OK
-    Running sum_generator...OK
-    Running counter...OK
-    Running imperative...OK
-    Running sum_map...OK
-    Running replace_eval...OK
-    0.079718ms      count
-    1.085038ms      sum_generator
-    1.152964ms      counter
-    1.413505ms      imperative
-    2.166971ms      sum_map
-    22.533185ms     replace_eval
+    Running count.................OK
+    Running sum_generator.............OK
+    Running counter.............OK
+    Running imperative.............OK
+    Running sum_map............OK
+    Running replace_eval.........OK
+    0.079913ms      count
+    1.111873ms      sum_generator
+    1.151133ms      counter
+    1.386445ms      imperative
+    2.170188ms      sum_map
+    24.047910ms     replace_eval
     """
+    def dot(*args):
+        print('.',end='',flush=True)
+        return 0
     import timeit
     functions = [count, sum_generator, counter, imperative, sum_map, replace_eval]
     results = []
     for f in functions:
-        print(f'Running {f.__name__}...', end='', flush=True)
+        print(f'Running {f.__name__}', end='', flush=True)
         timer = timeit.Timer('solve(puzzle)', globals={'solve': f, 'puzzle': puzzle})
-        number, _ = timer.autorange()
-        time = min(timer.repeat(number=number))/number*1000
+        number, _ = timer.autorange(dot)
+        time = min(timer.timeit(number) + dot() for i in range(5)) / number * 1000
         results.append( (time, f.__name__) )
         print('OK')
     results.sort()
