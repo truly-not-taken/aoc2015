@@ -1,32 +1,39 @@
 import pytest
-from solvepuzzle import solve
+from solvepuzzle import part1
+from solvepuzzle import part2
 
-def test_solve1():
-    assert 0 == solve('(())')
+def test_part1_1():
+    assert 0 == part1('(())')
 
-def test_solve2():
-    assert 0 == solve('()()')
+def test_part1_2():
+    assert 0 == part1('()()')
 
-def test_solve3():
-    assert 3 == solve('(((')
+def test_part1_3():
+    assert 3 == part1('(((')
 
-def test_solve4():
-    assert 3 == solve('(()(()(')
+def test_part1_4():
+    assert 3 == part1('(()(()(')
 
-def test_solve5():
-    assert 3 == solve('))(((((')
+def test_part1_5():
+    assert 3 == part1('))(((((')
 
-def test_solve6():
-    assert -1 == solve('())')
+def test_part1_6():
+    assert -1 == part1('())')
 
-def test_solve7():
-    assert -1 == solve('))(')
+def test_part1_7():
+    assert -1 == part1('))(')
 
-def test_solve8():
-    assert -3 == solve(')))')
+def test_part1_8():
+    assert -3 == part1(')))')
 
-def test_solve9():
-    assert -3 == solve(')())())')
+def test_part1_9():
+    assert -3 == part1(')())())')
 
-def test_solve1000():
-    assert 1000 == solve('('*1000)
+def test_part1_1000():
+    assert 1000 == part1('('*1000)
+
+def test_part2_1():
+    assert 1 == part2(')')
+
+def test_part2_2():
+    assert 5 == part2('()())')
