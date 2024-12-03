@@ -19,12 +19,17 @@ def part1(puzzle):
 
 def part2(puzzle):
     """Return the position of the character that causes Santa to first enter the basement."""
+    # return cheat(puzzle)
     return reuse_part1(puzzle)
     # return imperative(puzzle)
     # return for_enum(puzzle)
     # return for_dict(puzzle)
     # return generator(puzzle)
     # return gen_index(puzzle)
+
+def cheat(puzzle):
+    """Works for examples from the description of the puzzle."""
+    return len(puzzle)
 
 def reuse_part1(puzzle):
     """Use part1() in accordance with DRY principle."""
