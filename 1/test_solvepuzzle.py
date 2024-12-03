@@ -37,3 +37,9 @@ def test_part2_1():
 
 def test_part2_2():
     assert 5 == part2('()())')
+
+def test_part2_3():
+    assert 5 == part2('(()))))')
+
+def test_part2_1500():
+    assert 1001 == part2('('*500+')'*1000)
