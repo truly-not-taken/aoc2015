@@ -20,12 +20,14 @@ def part1(puzzle):
 def part2(puzzle):
     """Return the position of the character that causes Santa to first enter the basement."""
     # return cheat(puzzle)
-    return reuse_part1(puzzle)
+    # return reuse_part1(puzzle)
     # return imperative(puzzle)
     # return for_enum(puzzle)
     # return for_dict(puzzle)
     # return generator(puzzle)
-    # return gen_index(puzzle)
+    # return compr_index(puzzle)
+    # return compr_len(puzzle)
+    return better_imperative(puzzle)
 
 def cheat(puzzle):
     """Works for examples from the description of the puzzle."""
@@ -87,10 +89,24 @@ def generator(puzzle):
         position += 1
     return position
 
-def gen_index(puzzle):
-    """Solve part 2 call index() method of the list of floors Santa visited."""
+def compr_index(puzzle):
+    """Solve part 2 using list comprehension and list.index()."""
     floor = 0
     return [floor:=floor+(1 if c=='(' else -1) for c in puzzle].index(-1)+1
+
+def compr_len(puzzle):
+    """Solve part 2 using list comprehension and len()."""
+    floor = 0
+    return len([floor:=floor+(1 if c=='(' else -1) for c in puzzle if floor>=0])
+
+def better_imperative(puzzle):
+    """Solve part 2 slightly less boring way."""
+    floor = 0
+    position = 0
+    for character in puzzle:
+        position, floor = position + 1 , floor + (1 if character == '(' else -1)
+        if floor == -1:
+            return position
 
 def benchmark(puzzle):
     """
@@ -104,14 +120,18 @@ def benchmark(puzzle):
     Running for_enum...............OK
     Running for_dict..............OK
     Running generator..............OK
-    Running gen_index.............OK
-    0.000313ms      cheat
-    0.301625ms      imperative
-    0.317692ms      for_enum
-    0.510049ms      generator
-    0.643121ms      for_dict
-    1.763845ms      gen_index
-    4.580958ms      reuse_part1
+    Running compr_index.............OK
+    Running compr_len..............OK
+    Running better_imperative...............OK
+    0.000303ms      cheat
+    0.233554ms      better_imperative
+    0.282934ms      imperative
+    0.318613ms      for_enum
+    0.516514ms      generator
+    0.636725ms      compr_len
+    0.653871ms      for_dict
+    1.734715ms      compr_index
+    4.552847ms      reuse_part1
     >>> solvepuzzle.benchmark('('*9999+')'*10000)
     Running cheat........................OK
     Running reuse_part1......OK
@@ -119,21 +139,25 @@ def benchmark(puzzle):
     Running for_enum...........OK
     Running for_dict..........OK
     Running generator..........OK
-    Running gen_index...........OK
-    0.000302ms      cheat
-    4.263464ms      gen_index
-    6.745211ms      imperative
-    7.462714ms      for_enum
-    11.230830ms     generator
-    14.225275ms     for_dict
-    1167.370504ms   reuse_part1
+    Running compr_index...........OK
+    Running compr_len...........OK
+    Running better_imperative...........OK
+    0.000310ms      cheat
+    4.158089ms      compr_len
+    4.360929ms      compr_index
+    5.453742ms      better_imperative
+    6.848317ms      imperative
+    7.095255ms      for_enum
+    11.477133ms     generator
+    14.526480ms     for_dict
+    1165.639348ms   reuse_part1
     """
     def dot(*args):
         """Print a dot. That is it."""
         print('.',end='',flush=True)
         return 0
     import timeit
-    functions = [cheat, reuse_part1, imperative, for_enum, for_dict, generator, gen_index]
+    functions = [cheat, reuse_part1, imperative, for_enum, for_dict, generator, compr_index, compr_len, better_imperative]
     results = []
     for f in functions:
         print(f'Running {f.__name__}', end='', flush=True)
@@ -149,13 +173,13 @@ def benchmark(puzzle):
 def benchmark2():
     """Print a table of numbers for a spreadsheet to draw a fun chart."""
     import timeit
-    functions = [cheat, reuse_part1, imperative, for_enum, for_dict, generator, gen_index]
+    functions = [cheat, reuse_part1, imperative, for_enum, for_dict, generator, compr_index, compr_len, better_imperative]
     results = [['Size_of_input']+list(range(1000, 30001, 1000))]
     for f in functions:
         print(f'Running {f.__name__}', end='', flush=True)
         results.append([f.__name__])
         for size in results[0][1:]:
-            puzzle = '('*(size//37) + ')'*(size-size//37)
+            puzzle = '('*(size//7) + ')'*(size-size//7)
             timer = timeit.Timer('solve(puzzle)', globals={'solve': f, 'puzzle': puzzle})
             number, time = timer.autorange()
             print('.',end='',flush=True)
